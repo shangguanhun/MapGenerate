@@ -16,6 +16,9 @@ public class GenerateMap : MonoBehaviour {
     public List<Vector2> pointList = new List<Vector2>();
     public List<Vector2> borderPointList = new List<Vector2>();
 
+    bool isGetPointOver = true;
+    bool isMakeMeshOver = true;
+
     void Start () {
 
         map = Resources.Load("map") as Texture2D;
@@ -68,6 +71,7 @@ public class GenerateMap : MonoBehaviour {
             TrySetPixel((int)point.x, (int)point.y);
             yield return new WaitForFixedUpdate();
         }
+        isGetPointOver = true;
     }
 
     IEnumerator makeCityMesh(int x,int y)
@@ -77,6 +81,7 @@ public class GenerateMap : MonoBehaviour {
         {
             yield return new WaitForFixedUpdate();
         }
+        isMakeMeshOver = true;
     }
 
     IEnumerator GetCitys()
@@ -87,12 +92,20 @@ public class GenerateMap : MonoBehaviour {
             {
                 if (map.GetPixel(i, j) != changeColor && map.GetPixel(i, j) != borderColor)
                 {
+                    isGetPointOver = false;
+                    isMakeMeshOver = false;
                     StartCoroutine(GetCityFromPoint(i, j));
-                    yield return new WaitForSeconds(5);
+                    while (!isGetPointOver)
+                    {
+                        yield return new WaitForSeconds(0.1f);
+                    }
                     if (borderPointList.Count > 0)
                     {
                         StartCoroutine(makeCityMesh(i, j));
-                        yield return new WaitForSeconds(5);
+                        while (!isMakeMeshOver)
+                        {
+                            yield return new WaitForSeconds(0.1f);
+                        }
                     }
                 }
             }
