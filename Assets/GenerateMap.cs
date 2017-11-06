@@ -20,7 +20,7 @@ public class GenerateMap : MonoBehaviour {
     public int mapSizeY;
     public Texture2D map = null;
     public RawImage image;
-    public int cityNum = 0;
+    public int provinceNum = 0;
 
     public List<Vector2> pointList = new List<Vector2>();
     public List<Vector2> borderPointList = new List<Vector2>();

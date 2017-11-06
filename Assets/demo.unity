@@ -429,9 +429,12 @@ MonoBehaviour:
   mapSizeY: 0
   map: {fileID: 0}
   image: {fileID: 963616120}
-  cityNum: 0
+  provinceNum: 0
   pointList: []
   borderPointList: []
+  isGetPointOver: 1
+  isnormalizeBorderPointOver: 1
+  isMakeMeshOver: 1
 --- !u!4 &2037575754
 Transform:
   m_ObjectHideFlags: 0
@@ -439,7 +442,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2037575752}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -313, y: -422, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
