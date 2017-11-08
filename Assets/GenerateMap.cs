@@ -55,8 +55,8 @@ public class GenerateMap : MonoBehaviour {
                     }
                     if (borderPointList.Count > 0)
                     {
-                        Map.GetMap.normalizeBorderPoint();
-                        Map.GetMap.makeCityMesh(i, j);
+                        Map.GetMap.NormalizeBorderPoint();
+                        Map.GetMap.MakeCityMesh(i, j);
                     }
                 }
             }

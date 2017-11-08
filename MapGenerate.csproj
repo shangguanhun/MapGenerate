@@ -79,6 +79,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\GenerateMap.cs" />
+    <Compile Include="Assets\GeometryHelper.cs" />
     <Compile Include="Assets\Map.cs" />
     <Compile Include="Assets\Province.cs" />
   </ItemGroup>
