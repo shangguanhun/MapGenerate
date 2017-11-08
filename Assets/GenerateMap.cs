@@ -26,10 +26,9 @@ public class GenerateMap : MonoBehaviour {
     public List<Vector2> borderPointList = new List<Vector2>();
 
     public bool isGetPointOver = true;
-    public bool isnormalizeBorderPointOver = true;
-    public bool isMakeMeshOver = true;
 
     void Start () {
+
         generateMap = this;
         map = Resources.Load("map") as Texture2D;
         map=GameObject.Instantiate(map);
@@ -49,8 +48,6 @@ public class GenerateMap : MonoBehaviour {
                 if (map.GetPixel(i, j) == mapColor)
                 {
                     isGetPointOver = false;
-                    isMakeMeshOver = false;
-                    isnormalizeBorderPointOver = false;
                     StartCoroutine(Province.GetProvince.GetCityFromPoint(i, j));
                     while (!isGetPointOver)
                     {
@@ -58,17 +55,8 @@ public class GenerateMap : MonoBehaviour {
                     }
                     if (borderPointList.Count > 0)
                     {
-                        StartCoroutine(Map.GetMap.normalizeBorderPoint());
-                        while (!isnormalizeBorderPointOver)
-                        {
-                            yield return new WaitForSeconds(0.1f);
-                        }
-
-                        StartCoroutine(Map.GetMap.makeCityMesh(i, j));
-                        while (!isMakeMeshOver)
-                        {
-                            yield return new WaitForSeconds(0.1f);
-                        }
+                        Map.GetMap.normalizeBorderPoint();
+                        Map.GetMap.makeCityMesh(i, j);
                     }
                 }
             }
