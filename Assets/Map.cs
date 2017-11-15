@@ -1,7 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
-
-
 
 public class Map{
     private static Map map = null;
@@ -81,8 +80,9 @@ public class Map{
     {
         GameObject go = GameObject.Instantiate(BaseMeshObject, GenerateMap.GetGenerateMap.transform);
         Mesh mesh = go.GetComponent<MeshFilter>().mesh;
-        Vector3[] m_vertices;
-        int[] m_triangles;
+        List<Vector3> m_vertices = new List<Vector3>();
+        List<int> m_triangles = new List<int>();
+        bool isDrawMesh = false;
 
         List<PointF> polygon = new List<PointF>();
         foreach(Vector2 vec in GenerateMap.GetGenerateMap.borderPointList)
@@ -91,37 +91,76 @@ public class Map{
         }
         while (polygon.Count > 0)
         {
-            for (int j = 0; j < polygon.Count; j++)
+            List<PointF> nPolygon = new List<PointF>();
+            m_vertices.Clear();
+            m_triangles.Clear();
+            for (int j = 1; j < polygon.Count-1; j++)
             {
-
+                bool isIn = false;
+                PointF pointF = new PointF(polygon[j + 1].X - polygon[j - 1].X, polygon[j + 1].Y - polygon[j - 1].Y);
+                for (int k = 1; k < 10; k++)
+                {
+                    if (GeometryHelper.IntersectionOf(new PointF(polygon[j].X + k * pointF.X, polygon[j].Y + k * pointF.Y), new Line(polygon[j - 1], polygon[j + 1])) != GeometryHelper.Intersection.None)
+                    {
+                        isIn = true;
+                        break;
+                    }
+                }
+                if (!isIn)
+                {
+                    nPolygon.Add(polygon[j]);
+                    polygon.Remove(polygon[j]); 
+                     j--;
+                }
+                else
+                {
+                    Vector3 fVec = new Vector3(polygon[j-1].X, polygon[j-1].Y, 0);
+                    Vector3 nVec = new Vector3(polygon[j].X, polygon[j].Y, 0);
+                    Vector3 lVec = new Vector3(polygon[j+1].X, polygon[j+1].Y, 0);
+                    if (!m_vertices.Contains(fVec))
+                        m_vertices.Add(fVec);
+                    if (!m_vertices.Contains(nVec))
+                        m_vertices.Add(nVec);
+                    if (!m_vertices.Contains(lVec))
+                        m_vertices.Add(lVec);
+                    for(int i=0;i< m_vertices.Count;i++)
+                        if(Vector3.Equals(fVec,m_vertices[i]))
+                            m_triangles.Add(i);
+                    for (int i = 0; i < m_vertices.Count; i++)
+                        if (Vector3.Equals(nVec, m_vertices[i]))
+                            m_triangles.Add(i);
+                    for (int i = 0; i < m_vertices.Count; i++)
+                        if (Vector3.Equals(lVec, m_vertices[i]))
+                            m_triangles.Add(i);
+                    
+                    polygon.Remove(polygon[j]);
+                    j--;
+                }
             }
-        }
-
-        m_vertices = new Vector3[GenerateMap.GetGenerateMap.borderPointList.Count + 1];
-        m_triangles = new int[GenerateMap.GetGenerateMap.borderPointList.Count * 3];
-        
-
-        int i = 0;
-        foreach (Vector2 vec in GenerateMap.GetGenerateMap.borderPointList)
-        {
-            m_vertices[i + 1] = new Vector3(vec.x, vec.y, 0);
-            if (i < GenerateMap.GetGenerateMap.borderPointList.Count)
+            if (!isDrawMesh)
             {
-                m_triangles[i * 3] = 0;
-                m_triangles[i * 3 + 1] = i + 1;
-                m_triangles[i * 3 + 2] = i + 2;
-                if (i == GenerateMap.GetGenerateMap.borderPointList.Count - 1)
-                    m_triangles[i * 3 + 2] = 1;
+                isDrawMesh = true;
+                mesh.Clear();
+                mesh.vertices = m_vertices.ToArray();
+                mesh.triangles = m_triangles.ToArray();
             }
-
-            i++;
+            else
+            {
+                Mesh nMesh = new Mesh();
+                Mesh mMesh = new Mesh();
+                nMesh.vertices = m_vertices.ToArray();
+                nMesh.triangles = m_triangles.ToArray();
+                CombineInstance[] combine = new CombineInstance[2];
+                combine[0].mesh = mesh;
+                combine[1].mesh = nMesh;
+                mMesh.CombineMeshes(combine);
+                mesh.Clear();
+                mesh.vertices = mMesh.vertices;
+                mesh.triangles = mMesh.triangles;
+            }
+            mesh.RecalculateNormals();
+            polygon.ToArray();
+            polygon = nPolygon;
         }
-
-        mesh.Clear();
-        mesh.vertices = m_vertices;
-        mesh.triangles = m_triangles;
-        mesh.name = GenerateMap.GetGenerateMap.provinceNum.ToString() + "_mesh";
-
-        mesh.RecalculateNormals();
     }
 }

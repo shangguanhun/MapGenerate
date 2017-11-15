@@ -41,9 +41,9 @@ public class GenerateMap : MonoBehaviour {
 
     IEnumerator GetCitys()
     {
-        for(int i = 0; i < mapSizeX; i+=16)
+        for (int i = mapSizeX; i >= 0; i -= 16)
         {
-            for (int j = 0; j < mapSizeY; j += 16)
+            for (int j = mapSizeY; j >= 0; j -= 16)
             {
                 if (map.GetPixel(i, j) == mapColor)
                 {
@@ -56,7 +56,8 @@ public class GenerateMap : MonoBehaviour {
                     if (borderPointList.Count > 0)
                     {
                         Map.GetMap.NormalizeBorderPoint();
-                        Map.GetMap.MakeCityMesh(i, j);
+                        //Map.GetMap.MakeCityMesh(i, j);
+                        Map.GetMap.MakeCityMesh();
                     }
                 }
             }
