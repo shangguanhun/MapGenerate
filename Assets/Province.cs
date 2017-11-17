@@ -22,41 +22,133 @@ public class Province{
         GenerateMap.GetGenerateMap.map.SetPixel(x, y, GenerateMap.GetGenerateMap.changeColor);
     }
 
-    void TryAddPoint(int x, int y)
+    bool AddMorePoint()
     {
-        if (GenerateMap.GetGenerateMap.map.GetPixel(x, y) == GenerateMap.GetGenerateMap.mapColor)
+        int x, y;
+        for (int i = GenerateMap.GetGenerateMap.borderPointList.Count - 1; i > -1; i--)
         {
-            GenerateMap.GetGenerateMap.pointList.Add(new Vector2(x, y));
+            x = (int)GenerateMap.GetGenerateMap.borderPointList[i].x - 1;
+            y = (int)GenerateMap.GetGenerateMap.borderPointList[i].y;
+            if (IsBorderPoint(x, y))
+            {
+                GenerateMap.GetGenerateMap.borderPointList.Add(new Vector2(x, y));
+                SetPixel(x, y);
+                return true;
+            }
+            x = (int)GenerateMap.GetGenerateMap.borderPointList[i].x - 1;
+            y = (int)GenerateMap.GetGenerateMap.borderPointList[i].y + 1;
+            if (IsBorderPoint(x, y))
+            {
+                GenerateMap.GetGenerateMap.borderPointList.Add(new Vector2(x, y));
+                SetPixel(x, y);
+                return true;
+            }
+
+            x = (int)GenerateMap.GetGenerateMap.borderPointList[i].x;
+            y = (int)GenerateMap.GetGenerateMap.borderPointList[i].y + 1;
+            if (IsBorderPoint(x, y))
+            {
+                GenerateMap.GetGenerateMap.borderPointList.Add(new Vector2(x, y));
+                SetPixel(x, y);
+                return true;
+            }
+            x = (int)GenerateMap.GetGenerateMap.borderPointList[i].x + 1;
+            y = (int)GenerateMap.GetGenerateMap.borderPointList[i].y + 1;
+            if (IsBorderPoint(x, y))
+            {
+                GenerateMap.GetGenerateMap.borderPointList.Add(new Vector2(x, y));
+                SetPixel(x, y);
+                return true;
+            }
+
+            x = (int)GenerateMap.GetGenerateMap.borderPointList[i].x + 1;
+            y = (int)GenerateMap.GetGenerateMap.borderPointList[i].y;
+            if (IsBorderPoint(x, y))
+            {
+                GenerateMap.GetGenerateMap.borderPointList.Add(new Vector2(x, y));
+                SetPixel(x, y);
+                return true;
+            }
+            x = (int)GenerateMap.GetGenerateMap.borderPointList[i].x + 1;
+            y = (int)GenerateMap.GetGenerateMap.borderPointList[i].y - 1;
+            if (IsBorderPoint(x, y))
+            {
+                GenerateMap.GetGenerateMap.borderPointList.Add(new Vector2(x, y));
+                SetPixel(x, y);
+                return true;
+            }
+
+            x = (int)GenerateMap.GetGenerateMap.borderPointList[i].x;
+            y = (int)GenerateMap.GetGenerateMap.borderPointList[i].y - 1;
+            if (IsBorderPoint(x, y))
+            {
+                GenerateMap.GetGenerateMap.borderPointList.Add(new Vector2(x, y));
+                SetPixel(x, y);
+                return true;
+            }
+            x = (int)GenerateMap.GetGenerateMap.borderPointList[i].x - 1;
+            y = (int)GenerateMap.GetGenerateMap.borderPointList[i].y - 1;
+            if (IsBorderPoint(x, y))
+            {
+                GenerateMap.GetGenerateMap.borderPointList.Add(new Vector2(x, y));
+                SetPixel(x, y);
+                return true;
+            }
         }
+        return false;
     }
 
-    void TrySetPixel(int x, int y)
+    bool IsBorderPoint(int x, int y)
     {
-        if (GenerateMap.GetGenerateMap.map.GetPixel(x, y) == GenerateMap.GetGenerateMap.mapColor)
+        Color color;
+        color = GenerateMap.GetGenerateMap.map.GetPixel(x, y);
+        if (color == GenerateMap.GetGenerateMap.mapColor)
         {
-            SetPixel(x, y);
-            TryAddPoint(x - 1, y);
-            TryAddPoint(x + 1, y);
-            TryAddPoint(x, y + 1);
-            TryAddPoint(x, y - 1);
+            color = GenerateMap.GetGenerateMap.map.GetPixel(x - 1, y);
+            if (color != GenerateMap.GetGenerateMap.mapColor && color != GenerateMap.GetGenerateMap.changeColor)
+                return true;
+
+            color = GenerateMap.GetGenerateMap.map.GetPixel(x, y + 1);
+            if (color != GenerateMap.GetGenerateMap.mapColor && color != GenerateMap.GetGenerateMap.changeColor)
+                return true;
+
+            color = GenerateMap.GetGenerateMap.map.GetPixel(x + 1, y);
+            if (color != GenerateMap.GetGenerateMap.mapColor && color != GenerateMap.GetGenerateMap.changeColor)
+                return true;
+
+            color = GenerateMap.GetGenerateMap.map.GetPixel(x, y - 1);
+            if (color != GenerateMap.GetGenerateMap.mapColor && color != GenerateMap.GetGenerateMap.changeColor)
+                return true;
         }
-        else
+
+        return false;
+    }
+
+    Vector2 GetBorderPoint(int x,int y)
+    {
+        while (!IsBorderPoint(x, y))
         {
-            GenerateMap.GetGenerateMap.borderPointList.Add(new Vector2(x, y));
+            x--;
         }
+        return new Vector2(x, y);
     }
 
     public IEnumerator GetCityFromPoint(int x, int y)
     {
-        GenerateMap.GetGenerateMap.pointList.Add(new Vector2(x, y));
         GenerateMap.GetGenerateMap.borderPointList.Clear();
+        GenerateMap.GetGenerateMap.borderPointList.Add(GetBorderPoint(x, y));
+        bool isMore = true;
         int timer = 0;
-        while (GenerateMap.GetGenerateMap.pointList.Count > 0)
+        while (isMore)
         {
-            Vector2 point = GenerateMap.GetGenerateMap.pointList[0];
-            TrySetPixel((int)point.x, (int)point.y);
-            GenerateMap.GetGenerateMap.pointList.RemoveAt(0);
-            if (timer > 100)
+            isMore = false;
+
+            if (AddMorePoint())
+            {
+                isMore = true;
+            }
+
+            if (timer > 1)
             {
                 timer = 0;
                 GenerateMap.GetGenerateMap.map.Apply();
@@ -66,5 +158,4 @@ public class Province{
         }
         GenerateMap.GetGenerateMap.isGetPointOver = true;
     }
-
 }

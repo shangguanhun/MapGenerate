@@ -20,8 +20,6 @@ internal class Line
     public float X1, X2, Y1, Y2;
     public Line(PointF p1, PointF p2)
     {
-        //this.p1 = new PointF((p2.X - p1.X) / 10 + p1.X, (p2.Y - p1.Y) / 10 + p1.Y);
-        //this.p2 = new PointF(p2.X - (p2.X - p1.X) / 10, p2.Y - (p2.Y - p1.Y) / 10);
         this.p1 = p1;
         this.p2 = p2;
         X1 = p1.X;

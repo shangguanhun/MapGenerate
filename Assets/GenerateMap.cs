@@ -21,8 +21,7 @@ public class GenerateMap : MonoBehaviour {
     public Texture2D map = null;
     public RawImage image;
     public int provinceNum = 0;
-
-    public List<Vector2> pointList = new List<Vector2>();
+    
     public List<Vector2> borderPointList = new List<Vector2>();
 
     public bool isGetPointOver = true;
@@ -56,8 +55,8 @@ public class GenerateMap : MonoBehaviour {
                     if (borderPointList.Count > 0)
                     {
                         Map.GetMap.NormalizeBorderPoint();
-                        //Map.GetMap.MakeCityMesh(i, j);
-                        Map.GetMap.MakeCityMesh();
+                        Map.GetMap.MakeCityMesh(i, j);
+                        //Map.GetMap.MakeCityMesh();
                     }
                 }
             }

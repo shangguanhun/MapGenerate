@@ -204,8 +204,8 @@ MonoBehaviour:
     y: 0
     width: 429
     height: 948
-  m_MinSize: {x: 277, y: 71}
-  m_MaxSize: {x: 4002, y: 4021}
+  m_MinSize: {x: 275, y: 50}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 13}
   m_Panes:
   - {fileID: 13}
@@ -289,23 +289,23 @@ MonoBehaviour:
     height: 927
   m_TreeViewState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: e0b4ffff
-    m_LastClickedID: -19232
-    m_ExpandedIDs: 1afcffff000000002826000032260000
+    m_SelectedIDs: c4f6ffff
+    m_LastClickedID: -2364
+    m_ExpandedIDs: 1afcffff0000000034260000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
-      m_Name: BaseMeshObject(Clone)
-      m_OriginalName: BaseMeshObject(Clone)
+      m_Name: 
+      m_OriginalName: 
       m_EditFieldRect:
         serializedVersion: 2
         x: 0
         y: 0
         width: 0
         height: 0
-      m_UserData: -19232
+      m_UserData: 0
       m_IsWaitingForDelay: 0
       m_IsRenaming: 0
-      m_OriginalEventType: 0
+      m_OriginalEventType: 11
       m_IsRenamingFilename: 0
       m_ClientGUIView: {fileID: 7}
     m_SearchString: 
@@ -395,9 +395,9 @@ MonoBehaviour:
   m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: f8250000
-    m_LastClickedID: 9720
-    m_ExpandedIDs: 00000000f825000000ca9a3bffffff7f
+    m_SelectedIDs: fa250000
+    m_LastClickedID: 9722
+    m_ExpandedIDs: 00000000fa25000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -425,7 +425,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000f8250000
+    m_ExpandedIDs: 00000000fa250000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -583,14 +583,14 @@ MonoBehaviour:
     width: 906
     height: 315
   m_SceneLighting: 1
-  lastFramingTime: 2432.4961597445317
+  lastFramingTime: 10827.081157959763
   m_2DMode: 1
   m_isRotationLocked: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 149.32428, y: 33.81299, z: -10}
+    m_Target: {x: 638.9133, y: 407.70508, z: -10}
     speed: 2
-    m_Value: {x: 149.32428, y: 33.81299, z: -10}
+    m_Value: {x: 638.9133, y: 407.70508, z: -10}
   m_RenderMode: 0
   m_ValidateTrueMetals: 0
   m_SceneViewState:
@@ -617,9 +617,9 @@ MonoBehaviour:
     speed: 2
     m_Value: {x: 0, y: 0, z: 0, w: 1}
   m_Size:
-    m_Target: 2.8578837
+    m_Target: 285.43774
     speed: 2
-    m_Value: 2.8578837
+    m_Value: 285.43774
   m_Ortho:
     m_Target: 1
     speed: 2

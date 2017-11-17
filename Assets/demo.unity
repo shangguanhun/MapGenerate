@@ -424,17 +424,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mapColor: {r: 1, g: 0, b: 0, a: 1}
-  changeColor: {r: 1, g: 1, b: 1, a: 1}
+  changeColor: {r: 0.19999981, g: 0, b: 1, a: 1}
+  backgroundColor: {r: 1, g: 1, b: 1, a: 0}
   mapSizeX: 0
   mapSizeY: 0
   map: {fileID: 0}
   image: {fileID: 963616120}
   provinceNum: 0
-  pointList: []
   borderPointList: []
   isGetPointOver: 1
-  isnormalizeBorderPointOver: 1
-  isMakeMeshOver: 1
 --- !u!4 &2037575754
 Transform:
   m_ObjectHideFlags: 0
