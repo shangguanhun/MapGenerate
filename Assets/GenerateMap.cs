@@ -46,7 +46,6 @@ public class GenerateMap : MonoBehaviour {
             {
                 if (map.GetPixel(i, j) == mapColor)
                 {
-                    Debug.Log(i + " " + j);
                     isGetPointOver = false;
                     StartCoroutine(Province.GetProvince.GetCityFromPoint(i, j));
                     while (!isGetPointOver)
@@ -55,9 +54,9 @@ public class GenerateMap : MonoBehaviour {
                     }
                     if (borderPointList.Count > 0)
                     {
-                        //Map.GetMap.NormalizeBorderPoint();
+                        Map.GetMap.NormalizeBorderPoint();
                         //Map.GetMap.MakeCityMesh(i, j);
-                        //Map.GetMap.MakeCityMesh1();
+                        //Map.GetMap.MakeCityMeshWrong();
                     }
                 }
             }
