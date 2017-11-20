@@ -124,9 +124,9 @@ public class Province{
         return false;
     }
 
-    Vector2 GetBorderPoint(int x,int y)
+    Vector2 GetBorderPoint(int x, int y)
     {
-        while (!IsBorderPoint(x, y))
+        while (!IsBorderPoint(x, y) && x >= 0)
         {
             x--;
         }
@@ -136,25 +136,29 @@ public class Province{
     public IEnumerator GetCityFromPoint(int x, int y)
     {
         GenerateMap.GetGenerateMap.borderPointList.Clear();
-        GenerateMap.GetGenerateMap.borderPointList.Add(GetBorderPoint(x, y));
-        bool isMore = true;
-        int timer = 0;
-        while (isMore)
+        Vector2 vector = GetBorderPoint(x, y);
+        if (vector.x >= 0)
         {
-            isMore = false;
-
-            if (AddMorePoint())
+            GenerateMap.GetGenerateMap.borderPointList.Add(vector);
+            bool isMore = true;
+            int timer = 0;
+            while (isMore)
             {
-                isMore = true;
-            }
+                isMore = false;
 
-            if (timer > 1)
-            {
-                timer = 0;
-                GenerateMap.GetGenerateMap.map.Apply();
-                yield return new WaitForFixedUpdate();
+                if (AddMorePoint())
+                {
+                    isMore = true;
+                }
+
+                if (timer > 1)
+                {
+                    timer = 0;
+                    GenerateMap.GetGenerateMap.map.Apply();
+                    yield return new WaitForFixedUpdate();
+                }
+                timer++;
             }
-            timer++;
         }
         GenerateMap.GetGenerateMap.isGetPointOver = true;
     }

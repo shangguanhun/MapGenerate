@@ -21,7 +21,7 @@ public class Map{
     //删除多余顶点
     public void NormalizeBorderPoint()
     {
-        Debug.Log(GenerateMap.GetGenerateMap.borderPointList.Count);
+        Debug.Log("删除多余点前点的数量："+GenerateMap.GetGenerateMap.borderPointList.Count);
         for (int i = 1; i < GenerateMap.GetGenerateMap.borderPointList.Count - 1; i++)
         {
             Vector2 firstPoint = GenerateMap.GetGenerateMap.borderPointList[i - 1];
@@ -33,7 +33,7 @@ public class Map{
                 i--;
             }
         }
-        Debug.Log(GenerateMap.GetGenerateMap.borderPointList.Count);
+        Debug.Log("删除多余点后点的数量："+GenerateMap.GetGenerateMap.borderPointList.Count);
     }
 
     public void MakeCityMesh(int x, int y)
@@ -79,7 +79,6 @@ public class Map{
         mesh.RecalculateNormals();
     }
     
-
     public void MakeCityMesh()
     {
         List<Vector3> m_vertices = new List<Vector3>();
@@ -97,17 +96,10 @@ public class Map{
             m_triangles.Clear();
             for (int j = 1; j < polygon.Count - 1; j++)
             {
-                bool isIn = false;
-                PointF pointF = new PointF(polygon[j + 1].X - polygon[j - 1].X, polygon[j + 1].Y - polygon[j - 1].Y);
-                for (int k = 1; k < 10; k++)
-                {
-                    if (GeometryHelper.IntersectionOf(new PointF(polygon[j].X + k * pointF.X, polygon[j].Y + k * pointF.Y), new Line(polygon[j - 1], polygon[j + 1])) != GeometryHelper.Intersection.None)
-                    {
-                        isIn = true;
-                        break;
-                    }
-                }
-                if (isIn)
+                PointF point = new PointF(polygon[j + 1].X - polygon[j - 1].X, polygon[j + 1].Y - polygon[j - 1].Y);
+                Line line = new Line(new PointF(polygon[j - 1].X+point.X/10, polygon[j - 1].Y+ point.Y / 10), new PointF(polygon[j + 1].X- point.X / 10, polygon[j + 1].Y- point.Y / 10));
+                Debug.Log(GeometryHelper.IntersectionOf(line, polygon));
+                if (GeometryHelper.IntersectionOf(line,polygon)!= GeometryHelper.Intersection.None)
                 {
                     nPolygon.Add(polygon[j]);
                     polygon.Remove(polygon[j]);
@@ -143,6 +135,71 @@ public class Map{
             {
                 GameObject go = GameObject.Instantiate(BaseMeshObject, GenerateMap.GetGenerateMap.transform);
                 Mesh mesh = go.GetComponent<MeshFilter>().mesh;
+                mesh.Clear();
+                mesh.vertices = m_vertices.ToArray();
+                mesh.triangles = m_triangles.ToArray();
+                mesh.RecalculateNormals();
+            }
+            polygon.ToArray();
+            polygon = nPolygon;
+        }
+    }
+
+    public void MakeCityMesh1()
+    {
+        List<Vector3> m_vertices = new List<Vector3>();
+        List<int> m_triangles = new List<int>();
+        GameObject go = GameObject.Instantiate(BaseMeshObject, GenerateMap.GetGenerateMap.transform);
+        Mesh mesh = go.GetComponent<MeshFilter>().mesh;
+        m_vertices.Clear();
+        m_triangles.Clear();
+        List<PointF> polygon = new List<PointF>();
+        foreach (Vector2 vec in GenerateMap.GetGenerateMap.borderPointList)
+        {
+            polygon.Add(new PointF(vec.x, vec.y));
+        }
+        while (polygon.Count > 0)
+        {
+            List<PointF> nPolygon = new List<PointF>();
+            for (int j = 1; j < polygon.Count - 1; j++)
+            {
+                PointF point = new PointF(polygon[j + 1].X - polygon[j - 1].X, polygon[j + 1].Y - polygon[j - 1].Y);
+                Line line = new Line(new PointF(polygon[j - 1].X + point.X / 10, polygon[j - 1].Y + point.Y / 10), new PointF(polygon[j + 1].X - point.X / 10, polygon[j + 1].Y - point.Y / 10));
+                //Debug.Log(GeometryHelper.IntersectionOf(line, polygon));
+                if (GeometryHelper.IntersectionOf(line, polygon) != GeometryHelper.Intersection.None)
+                {
+                    nPolygon.Add(polygon[j]);
+                    polygon.Remove(polygon[j]);
+                    j--;
+                }
+                else
+                {
+                    Vector3 fVec = new Vector3(polygon[j - 1].X, polygon[j - 1].Y, 0);
+                    Vector3 nVec = new Vector3(polygon[j].X, polygon[j].Y, 0);
+                    Vector3 lVec = new Vector3(polygon[j + 1].X, polygon[j + 1].Y, 0);
+                    if (!m_vertices.Contains(fVec))
+                        m_vertices.Add(fVec);
+                    if (!m_vertices.Contains(nVec))
+                        m_vertices.Add(nVec);
+                    if (!m_vertices.Contains(lVec))
+                        m_vertices.Add(lVec);
+                    for (int i = 0; i < m_vertices.Count; i++)
+                        if (Vector3.Equals(fVec, m_vertices[i]))
+                            m_triangles.Add(i);
+                    for (int i = 0; i < m_vertices.Count; i++)
+                        if (Vector3.Equals(nVec, m_vertices[i]))
+                            m_triangles.Add(i);
+                    for (int i = 0; i < m_vertices.Count; i++)
+                        if (Vector3.Equals(lVec, m_vertices[i]))
+                            m_triangles.Add(i);
+
+                    polygon.Remove(polygon[j]);
+                    j--;
+                }
+            }
+
+            if (m_vertices.Count != 0)
+            {
                 mesh.Clear();
                 mesh.vertices = m_vertices.ToArray();
                 mesh.triangles = m_triangles.ToArray();
