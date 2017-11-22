@@ -25,6 +25,7 @@ public class GenerateMap : MonoBehaviour {
     public List<Vector2> borderPointList = new List<Vector2>();
 
     public bool isGetPointOver = true;
+    public bool isDrawMeshOver = true;
 
     void Start () {
 
@@ -47,6 +48,7 @@ public class GenerateMap : MonoBehaviour {
                 if (map.GetPixel(i, j) == mapColor)
                 {
                     isGetPointOver = false;
+                    isDrawMeshOver = false;
                     StartCoroutine(Province.GetProvince.GetCityFromPoint(i, j));
                     while (!isGetPointOver)
                     {
@@ -54,9 +56,14 @@ public class GenerateMap : MonoBehaviour {
                     }
                     if (borderPointList.Count > 0)
                     {
-                        Map.GetMap.NormalizeBorderPoint();
+                        //Map.GetMap.NormalizeBorderPoint();
                         //Map.GetMap.MakeCityMesh(i, j);
-                        //Map.GetMap.MakeCityMeshWrong();
+                        //Map.GetMap.MakeCityMeshByLineAndPolygon();
+                        StartCoroutine(Map.GetMap.MakeCityMesh());
+                        while (!isDrawMeshOver)
+                        {
+                            yield return new WaitForSeconds(0.1f);
+                        }
                     }
                 }
             }
