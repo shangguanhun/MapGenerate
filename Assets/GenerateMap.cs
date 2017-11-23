@@ -54,9 +54,9 @@ public class GenerateMap : MonoBehaviour {
                     {
                         yield return new WaitForSeconds(0.1f);
                     }
-                    if (borderPointList.Count > 0)
+                    if (borderPointList.Count > 2)
                     {
-                        //Map.GetMap.NormalizeBorderPoint();
+                        Map.GetMap.NormalizeBorderPoint();
                         //Map.GetMap.MakeCityMesh(i, j);
                         //Map.GetMap.MakeCityMeshByLineAndPolygon();
                         StartCoroutine(Map.GetMap.MakeCityMesh());
