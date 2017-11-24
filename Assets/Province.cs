@@ -166,7 +166,7 @@ public class Province{
                         isMore = true;
                     }
 
-                    if (timer >= 0)
+                    if (timer >= 100)
                     {
                         timer = 0;
                         GenerateMap.GetGenerateMap.map.Apply();

@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Map{
+public class Map
+{
     private static Map map = null;
     private static GameObject BaseMeshObject;
     public static Map GetMap
@@ -45,28 +46,36 @@ public class Map{
     //删除多余顶点
     public void NormalizeBorderPoint()
     {
-        Debug.Log("删除多余点前点的数量："+GenerateMap.GetGenerateMap.borderPointList.Count);
         for (int i = 1; i < GenerateMap.GetGenerateMap.borderPointList.Count - 1; i++)
         {
             Vector2 firstPoint = GenerateMap.GetGenerateMap.borderPointList[i - 1];
             Vector2 nowPoint = GenerateMap.GetGenerateMap.borderPointList[i];
             Vector2 lastPoint = GenerateMap.GetGenerateMap.borderPointList[i + 1];
-            if (Vector2.Angle(nowPoint - firstPoint, lastPoint - nowPoint) < 0.1f&& Vector2.Angle(nowPoint - firstPoint, lastPoint - nowPoint) > -0.1f)
+            if (Vector2.Angle(nowPoint - firstPoint, lastPoint - nowPoint) < 0.1f && Vector2.Angle(nowPoint - firstPoint, lastPoint - nowPoint) > -0.1f)
             {
+                //GenerateMap.GetGenerateMap.map.SetPixel((int)GenerateMap.GetGenerateMap.borderPointList[i].x, (int)GenerateMap.GetGenerateMap.borderPointList[i].y, Color.green);
                 GenerateMap.GetGenerateMap.borderPointList.RemoveAt(i);
                 i--;
             }
         }
-        Debug.Log("删除多余点后点的数量："+GenerateMap.GetGenerateMap.borderPointList.Count);
+        GenerateMap.GetGenerateMap.map.Apply();
+        Debug.Log("删除多余点后点的数量：" + GenerateMap.GetGenerateMap.borderPointList.Count);
+    }
+
+    public void DeleteDeathPoints()
+    {
+        Debug.Log("删除死点前点的数量：" + GenerateMap.GetGenerateMap.borderPointList.Count);
         for (int i = 1; i < GenerateMap.GetGenerateMap.borderPointList.Count - 1; i++)
         {
             if (IsDeathPoint((int)GenerateMap.GetGenerateMap.borderPointList[i].x, (int)GenerateMap.GetGenerateMap.borderPointList[i].y))
             {
+                GenerateMap.GetGenerateMap.map.SetPixel((int)GenerateMap.GetGenerateMap.borderPointList[i].x, (int)GenerateMap.GetGenerateMap.borderPointList[i].y, Color.gray);
                 GenerateMap.GetGenerateMap.borderPointList.Remove(GenerateMap.GetGenerateMap.borderPointList[i]);
                 i--;
             }
         }
         Debug.Log("删除死点后点的数量：" + GenerateMap.GetGenerateMap.borderPointList.Count);
+        GenerateMap.GetGenerateMap.map.Apply();
     }
 
     //弃用！！！此方法无法处理凹多边形
@@ -96,10 +105,10 @@ public class Map{
                 m_triangles[i * 3] = 0;
                 m_triangles[i * 3 + 1] = i + 1;
                 m_triangles[i * 3 + 2] = i + 2;
-                if (i == GenerateMap.GetGenerateMap.borderPointList.Count-1)
+                if (i == GenerateMap.GetGenerateMap.borderPointList.Count - 1)
                     m_triangles[i * 3 + 2] = 1;
             }
-            
+
             i++;
         }
 
@@ -165,13 +174,13 @@ public class Map{
         mesh.RecalculateNormals();
     }
 
-    private Vector3 ComputeBestFitNormal(List<Vector3> pointList,int num)
+    private Vector3 ComputeBestFitNormal(List<Vector3> pointList, int num)
     {
         //和置零
         Vector3 reslut = Vector3.zero;
         //从最后一个点开始，避免循环中进行if判断
         Vector3 p = pointList[num - 1];
-        for(int i = 0; i < num; i++)
+        for (int i = 0; i < num; i++)
         {
             Vector3 c = pointList[i];
             reslut.x += (p.z + c.z) * (p.y - c.y);
@@ -233,7 +242,7 @@ public class Map{
         List<Vector3> hollowPointList;
         foreach (Vector2 vec in GenerateMap.GetGenerateMap.borderPointList)
         {
-            if (!polygon.Contains(new Vector3(vec.x, vec.y,0)))
+            if (!polygon.Contains(new Vector3(vec.x, vec.y, 0)))
             {
                 polygon.Add(new Vector3(vec.x, vec.y, 0));
                 m_vertices.Add(new Vector3(vec.x, vec.y, 0));
@@ -242,13 +251,32 @@ public class Map{
         while (polygon.Count > 2)
         {
             hollowPointList = GetHollowPointList(polygon);
-            for (int j = 1; j < polygon.Count - 1; j++)
+            for (int j = 0; j < polygon.Count; j++)
             {
-                if (!hollowPointList.Contains(polygon[j]) || polygon.Count == 3)
+                if (!hollowPointList.Contains(polygon[j]) && polygon.Count > 2)
                 {
-                    Vector3 fVec = new Vector3(polygon[j - 1].x, polygon[j - 1].y, 0);
-                    Vector3 nVec = new Vector3(polygon[j].x, polygon[j].y, 0);
-                    Vector3 lVec = new Vector3(polygon[j + 1].x, polygon[j + 1].y, 0);
+                    Vector3 fVec;
+                    Vector3 nVec;
+                    Vector3 lVec;
+                    if (j > 0 && j < polygon.Count - 1)
+                    {
+                        fVec = new Vector3(polygon[j - 1].x, polygon[j - 1].y, 0);
+                        nVec = new Vector3(polygon[j].x, polygon[j].y, 0);
+                        lVec = new Vector3(polygon[j + 1].x, polygon[j + 1].y, 0);
+                    }
+                    else
+                    if (j == 0)
+                    {
+                        fVec = new Vector3(polygon[polygon.Count - 1].x, polygon[polygon.Count - 1].y, 0);
+                        nVec = new Vector3(polygon[j].x, polygon[j].y, 0);
+                        lVec = new Vector3(polygon[j + 1].x, polygon[j + 1].y, 0);
+                    }
+                    else
+                    {
+                        fVec = new Vector3(polygon[j - 1].x, polygon[j - 1].y, 0);
+                        nVec = new Vector3(polygon[j].x, polygon[j].y, 0);
+                        lVec = new Vector3(polygon[0].x, polygon[0].y, 0);
+                    }
 
                     for (int i = 0; i < m_vertices.Count; i++)
                         if (Vector3.Equals(fVec, m_vertices[i]))
@@ -273,7 +301,6 @@ public class Map{
                     j--;
                 }
             }
-
             hollowPointList.Clear();
 
             mesh.Clear();
