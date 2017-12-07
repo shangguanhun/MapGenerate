@@ -123,7 +123,7 @@ public class Map
     }
 
     //弃用！！！因其无法判断w形的凹多边形
-    public void MakeCityMeshByLineAndPolygon()
+    /*public void MakeCityMeshByLineAndPolygon()
     {
         List<Vector3> m_vertices = new List<Vector3>();
         List<int> m_triangles = new List<int>();
@@ -172,7 +172,7 @@ public class Map
         mesh.vertices = m_vertices.ToArray();
         mesh.triangles = m_triangles.ToArray();
         mesh.RecalculateNormals();
-    }
+    }*/
 
     private Vector3 ComputeBestFitNormal(List<Vector3> pointList, int num)
     {
@@ -230,14 +230,33 @@ public class Map
         return HollowPoints;
     }
 
+    private bool IsPolygonContainLine(List<PointF> nPolygon, Vector2 point1, Vector2 point2)
+    {
+        Vector2 vector;
+        bool contain = true;
+        float distance = Vector2.Distance(point1, point2);
+        for (int i = 1; i < distance; i++)
+        {
+            vector = Vector2.Lerp(point1, point2, i / distance);
+            if (!GeometryHelper.IsInPolygon(new PointF(vector.x, vector.y), nPolygon))
+            {
+                contain = false;
+                break;
+            }
+        }
+        return contain;
+    }
+
     public IEnumerator MakeCityMesh()
     {
         List<Vector3> m_vertices = new List<Vector3>();
         List<int> m_triangles = new List<int>();
+        List<PointF> nPolygon = new List<PointF>();
         m_vertices.Clear();
         m_triangles.Clear();
         GameObject go = GameObject.Instantiate(BaseMeshObject, GenerateMap.GetGenerateMap.transform);
-        Mesh mesh = go.GetComponent<MeshFilter>().mesh;
+        MeshFilter meshFilter = go.GetComponent<MeshFilter>();
+        Mesh mesh = meshFilter.mesh;
         List<Vector3> polygon = new List<Vector3>();
         List<Vector3> hollowPointList;
         foreach (Vector2 vec in GenerateMap.GetGenerateMap.borderPointList)
@@ -246,13 +265,14 @@ public class Map
             {
                 polygon.Add(new Vector3(vec.x, vec.y, 0));
                 m_vertices.Add(new Vector3(vec.x, vec.y, 0));
+                nPolygon.Add(new PointF(vec.x, vec.y));
             }
         }
         while (polygon.Count > 2)
         {
-            hollowPointList = GetHollowPointList(polygon);
             for (int j = 0; j < polygon.Count; j++)
             {
+                hollowPointList = GetHollowPointList(polygon);
                 if (!hollowPointList.Contains(polygon[j]) && polygon.Count > 2)
                 {
                     Vector3 fVec;
@@ -277,31 +297,39 @@ public class Map
                         nVec = new Vector3(polygon[j].x, polygon[j].y, 0);
                         lVec = new Vector3(polygon[0].x, polygon[0].y, 0);
                     }
-
-                    for (int i = 0; i < m_vertices.Count; i++)
-                        if (Vector3.Equals(fVec, m_vertices[i]))
-                        {
-                            m_triangles.Add(i);
-                            break;
-                        }
-                    for (int i = 0; i < m_vertices.Count; i++)
-                        if (Vector3.Equals(nVec, m_vertices[i]))
-                        {
-                            m_triangles.Add(i);
-                            break;
-                        }
-                    for (int i = 0; i < m_vertices.Count; i++)
-                        if (Vector3.Equals(lVec, m_vertices[i]))
-                        {
-                            m_triangles.Add(i);
-                            break;
-                        }
-
-                    polygon.Remove(polygon[j]);
-                    j--;
+                    if (hollowPointList.Count == 0 ||GenerateMap.GetGenerateMap.isContinue|| IsPolygonContainLine(nPolygon, fVec, lVec))
+                    {
+                        for (int i = 0; i < m_vertices.Count; i++)
+                            if (Vector3.Equals(fVec, m_vertices[i]))
+                            {
+                                m_triangles.Add(i);
+                                break;
+                            }
+                        for (int i = 0; i < m_vertices.Count; i++)
+                            if (Vector3.Equals(nVec, m_vertices[i]))
+                            {
+                                m_triangles.Add(i);
+                                break;
+                            }
+                        for (int i = 0; i < m_vertices.Count; i++)
+                            if (Vector3.Equals(lVec, m_vertices[i]))
+                            {
+                                m_triangles.Add(i);
+                                break;
+                            }
+                        GenerateMap.GetGenerateMap.isContinue = false;
+                        polygon.Remove(polygon[j]);
+                        nPolygon.Remove(nPolygon[j]);
+                        j--;
+                        mesh.Clear();
+                        mesh.vertices = m_vertices.ToArray();
+                        mesh.triangles = m_triangles.ToArray();
+                        mesh.RecalculateNormals();
+                        yield return new WaitForFixedUpdate();
+                    }
                 }
+                hollowPointList.Clear();
             }
-            hollowPointList.Clear();
 
             mesh.Clear();
             mesh.vertices = m_vertices.ToArray();
@@ -309,6 +337,9 @@ public class Map
             mesh.RecalculateNormals();
             yield return new WaitForSeconds(0.1f);
         }
+        GenerateMap.GetGenerateMap.provinceNum++;
+        mesh.name = GenerateMap.GetGenerateMap.provinceNum.ToString() + "_mesh";
+        SerializeMesh.MeshToFile(meshFilter,  mesh.name, 1);
         GenerateMap.GetGenerateMap.isDrawMeshOver = true;
     }
 }

@@ -27,6 +27,7 @@ public class GenerateMap : MonoBehaviour {
     public bool isGetPointOver = true;
     public bool isDrawMeshOver = true;
 
+    public bool isContinue = false;
     void Start () {
 
         generateMap = this;
@@ -37,6 +38,12 @@ public class GenerateMap : MonoBehaviour {
         mapSizeX = map.width;
         mapSizeY = map.height;
         StartCoroutine(GetCitys());
+    }
+
+    void FixedUpdate()
+    {
+        if (Input.anyKeyDown)
+            isContinue = true;
     }
 
     IEnumerator GetCitys()

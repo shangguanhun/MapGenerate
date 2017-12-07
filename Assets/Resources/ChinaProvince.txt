@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<provinces>
+	<province name="黑龙江" describe="你瞅啥，瞅你咋地" meshSrc="1_mesh" offset="1" /> 
+	<province name="内蒙古" describe="我们上学不骑马，真的" meshSrc="2_mesh" offset="1" /> 
+	<province name="新疆" describe="羊肉串，新疆的羊肉串" meshSrc="3_mesh" offset="1" /> 
+	<province name="吉林" describe="再瞅一下试试" meshSrc="4_mesh" offset="-1" /> 
+	<province name="辽宁" describe="试试就试试" meshSrc="5_mesh" offset="1" /> 
+	<province name="河北" describe="环首都贫困带" meshSrc="6_mesh" offset="1" /> 
+	<province name="浙江" describe="金华火。。。" meshSrc="7_mesh" offset="-1" /> 
+	<province name="江西" describe="江东呢？" meshSrc="8_mesh" offset="1" /> 
+	<province name="江苏" describe="上有天堂" meshSrc="9_mesh" offset="-1" /> 
+	<province name="安徽" describe="碗，不对是皖" meshSrc="10_mesh" offset="1" /> 
+	<province name="湖北" describe="热干面？？？" meshSrc="11_mesh" offset="1" /> 
+	<province name="山东" describe="学霸" meshSrc="12_mesh" offset="-1" /> 
+	<province name="河南" describe="河男人" meshSrc="13_mesh" offset="1" /> 
+	<province name="四川" describe="四川人说自己能吃辣椒" meshSrc="14_mesh" offset="1" /> 
+	<province name="福建" describe="不要吃我" meshSrc="15_mesh" offset="-1" /> 
+	<province name="湖南" describe="福南人就笑了" meshSrc="16_mesh" offset="1" /> 
+	<province name="贵州" describe="喵喵，辣椒" meshSrc="17_mesh" offset="1" /> 
+	<province name="甘肃" describe="放羊" meshSrc="18_mesh" offset="1" /> 
+	<province name="山西" describe="山西晋城？" meshSrc="19_mesh" offset="1" /> 
+	<province name="陕西" describe="兵马俑" meshSrc="20_mesh" offset="1" /> 
+	<province name="青海" describe="这里没有海" meshSrc="21_mesh" offset="1" /> 
+	<province name="重庆" describe="雾都？" meshSrc="22_mesh" offset="-1" /> 
+	<province name="西藏" describe="平均海拔4000m+" meshSrc="23_mesh" offset="1" /> 
+	<province name="广东" describe="福建人在哪里" meshSrc="24_mesh" offset="-1" /> 
+	<province name="宁夏上" describe="我好像变小了" meshSrc="25_mesh" offset="1" /> 
+	<province name="广西" describe="壮族自治区？" meshSrc="26_mesh" offset="1" /> 
+	<province name="宁夏下" describe="我也是" meshSrc="27_mesh" offset="-1" /> 
+	<province name="云南" describe="阿里山的姑娘" meshSrc="28_mesh" offset="-1" /> 
+</provinces>

@@ -78,10 +78,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\GenerateMap.cs" />
-    <Compile Include="Assets\GeometryHelper.cs" />
-    <Compile Include="Assets\Map.cs" />
-    <Compile Include="Assets\Province.cs" />
+    <Compile Include="Assets\Scripts\ClickMapButton\AddMapButton.cs" />
+    <Compile Include="Assets\Scripts\ClickMapButton\RayCastClick.cs" />
+    <Compile Include="Assets\Scripts\ClickMapButton\SerializeMesh.cs" />
+    <Compile Include="Assets\Scripts\ClickMapButton\XmlLoader.cs" />
+    <Compile Include="Assets\Scripts\GenerateMap\GenerateMap.cs" />
+    <Compile Include="Assets\Scripts\GenerateMap\GeometryHelper.cs" />
+    <Compile Include="Assets\Scripts\GenerateMap\Map.cs" />
+    <Compile Include="Assets\Scripts\GenerateMap\Province.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\Resources\ChinaProvince.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />

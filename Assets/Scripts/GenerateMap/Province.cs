@@ -16,7 +16,7 @@ public class Province{
             return province;
         }
     }
-
+    
     void SetPixel(int x, int y)
     {
         GenerateMap.GetGenerateMap.map.SetPixel(x, y, GenerateMap.GetGenerateMap.changeColor);
