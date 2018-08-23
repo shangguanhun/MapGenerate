@@ -2,180 +2,170 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Province{
-
-    private static Province province = null;
-    public static Province GetProvince
+namespace EarthSimulator.MapEditor
+{
+    public class Province
     {
-        get
+        void SetPixel(int x, int y)
         {
-            if (province == null)
-            {
-                province = new Province();
-            }
-            return province;
+            MapData.Map.SetPixel(x, y, MapData.ChangeColor);
         }
-    }
-    
-    void SetPixel(int x, int y)
-    {
-        GenerateMap.GetGenerateMap.map.SetPixel(x, y, GenerateMap.GetGenerateMap.changeColor);
-    }
 
-    bool HaveMore(Vector2 from,Vector2 to)
-    {
-        if (Vector2.Distance(from, to) > 1)
-            return true;
-        else
-            return false;
-    }
-
-    bool AddMorePoint()
-    {
-        int x, y;
-        for (int i = GenerateMap.GetGenerateMap.borderPointList.Count - 1; i > -1; i--)
+        bool HaveMore(Vector2 from, Vector2 to)
         {
-            if (GenerateMap.GetGenerateMap.borderPointList.Count > 10 && !HaveMore(GenerateMap.GetGenerateMap.borderPointList[0], GenerateMap.GetGenerateMap.borderPointList[i]))
+            if (Vector2.Distance(from, to) > 1)
+                return true;
+            else
                 return false;
-            x = (int)GenerateMap.GetGenerateMap.borderPointList[i].x - 1;
-            y = (int)GenerateMap.GetGenerateMap.borderPointList[i].y;
-            if (IsBorderPoint(x, y))
-            {
-                GenerateMap.GetGenerateMap.borderPointList.Add(new Vector2(x, y));
-                SetPixel(x, y);
-                return true;
-            }
-            x = (int)GenerateMap.GetGenerateMap.borderPointList[i].x;
-            y = (int)GenerateMap.GetGenerateMap.borderPointList[i].y + 1;
-            if (IsBorderPoint(x, y))
-            {
-                GenerateMap.GetGenerateMap.borderPointList.Add(new Vector2(x, y));
-                SetPixel(x, y);
-                return true;
-            }
-            x = (int)GenerateMap.GetGenerateMap.borderPointList[i].x + 1;
-            y = (int)GenerateMap.GetGenerateMap.borderPointList[i].y;
-            if (IsBorderPoint(x, y))
-            {
-                GenerateMap.GetGenerateMap.borderPointList.Add(new Vector2(x, y));
-                SetPixel(x, y);
-                return true;
-            }
-            x = (int)GenerateMap.GetGenerateMap.borderPointList[i].x;
-            y = (int)GenerateMap.GetGenerateMap.borderPointList[i].y - 1;
-            if (IsBorderPoint(x, y))
-            {
-                GenerateMap.GetGenerateMap.borderPointList.Add(new Vector2(x, y));
-                SetPixel(x, y);
-                return true;
-            }
-            
-
-
-
-            x = (int)GenerateMap.GetGenerateMap.borderPointList[i].x - 1;
-            y = (int)GenerateMap.GetGenerateMap.borderPointList[i].y + 1;
-            if (IsBorderPoint(x, y))
-            {
-                GenerateMap.GetGenerateMap.borderPointList.Add(new Vector2(x, y));
-                SetPixel(x, y);
-                return true;
-            }
-            x = (int)GenerateMap.GetGenerateMap.borderPointList[i].x + 1;
-            y = (int)GenerateMap.GetGenerateMap.borderPointList[i].y + 1;
-            if (IsBorderPoint(x, y))
-            {
-                GenerateMap.GetGenerateMap.borderPointList.Add(new Vector2(x, y));
-                SetPixel(x, y);
-                return true;
-            }
-            x = (int)GenerateMap.GetGenerateMap.borderPointList[i].x + 1;
-            y = (int)GenerateMap.GetGenerateMap.borderPointList[i].y - 1;
-            if (IsBorderPoint(x, y))
-            {
-                GenerateMap.GetGenerateMap.borderPointList.Add(new Vector2(x, y));
-                SetPixel(x, y);
-                return true;
-            }
-            x = (int)GenerateMap.GetGenerateMap.borderPointList[i].x - 1;
-            y = (int)GenerateMap.GetGenerateMap.borderPointList[i].y - 1;
-            if (IsBorderPoint(x, y))
-            {
-                GenerateMap.GetGenerateMap.borderPointList.Add(new Vector2(x, y));
-                SetPixel(x, y);
-                return true;
-            }
-        }
-        return false;
-    }
-
-    bool IsBorderPoint(int x, int y)
-    {
-        Color color;
-        color = GenerateMap.GetGenerateMap.map.GetPixel(x, y);
-        if (color == GenerateMap.GetGenerateMap.mapColor)
-        {
-            color = GenerateMap.GetGenerateMap.map.GetPixel(x - 1, y);
-            if (color != GenerateMap.GetGenerateMap.mapColor && color != GenerateMap.GetGenerateMap.changeColor)
-                return true;
-
-            color = GenerateMap.GetGenerateMap.map.GetPixel(x, y + 1);
-            if (color != GenerateMap.GetGenerateMap.mapColor && color != GenerateMap.GetGenerateMap.changeColor)
-                return true;
-
-            color = GenerateMap.GetGenerateMap.map.GetPixel(x + 1, y);
-            if (color != GenerateMap.GetGenerateMap.mapColor && color != GenerateMap.GetGenerateMap.changeColor)
-                return true;
-
-            color = GenerateMap.GetGenerateMap.map.GetPixel(x, y - 1);
-            if (color != GenerateMap.GetGenerateMap.mapColor && color != GenerateMap.GetGenerateMap.changeColor)
-                return true;
         }
 
-        return false;
-    }
-
-    Vector2 GetBorderPoint(int x, int y)
-    {
-        while (!IsBorderPoint(x, y))
+        bool AddMorePoint(List<Vector2> BorderPointList)
         {
-            x--;
-            if (x <= 0)
-                return Vector2.zero;
-        }
-        return new Vector2(x, y);
-    }
-
-    public IEnumerator GetCityFromPoint(int x, int y)
-    {
-        GenerateMap.GetGenerateMap.borderPointList.Clear();
-        Vector2 vector = GetBorderPoint(x, y);
-        if (!vector.Equals(Vector2.zero))
-        {
-            if (vector.x >= 0)
+            int x, y;
+            for (int i = BorderPointList.Count - 1; i > -1; i--)
             {
-                GenerateMap.GetGenerateMap.borderPointList.Add(vector);
-                bool isMore = true;
-                int timer = 0;
-                while (isMore)
+                if (BorderPointList.Count > 10 && !HaveMore(BorderPointList[0], BorderPointList[i]))
+                    return false;
+                x = (int)BorderPointList[i].x - 1;
+                y = (int)BorderPointList[i].y;
+                if (IsBorderPoint(x, y))
                 {
-                    isMore = false;
+                    BorderPointList.Add(new Vector2(x, y));
+                    SetPixel(x, y);
+                    return true;
+                }
+                x = (int)BorderPointList[i].x;
+                y = (int)BorderPointList[i].y + 1;
+                if (IsBorderPoint(x, y))
+                {
+                    BorderPointList.Add(new Vector2(x, y));
+                    SetPixel(x, y);
+                    return true;
+                }
+                x = (int)BorderPointList[i].x + 1;
+                y = (int)BorderPointList[i].y;
+                if (IsBorderPoint(x, y))
+                {
+                    BorderPointList.Add(new Vector2(x, y));
+                    SetPixel(x, y);
+                    return true;
+                }
+                x = (int)BorderPointList[i].x;
+                y = (int)BorderPointList[i].y - 1;
+                if (IsBorderPoint(x, y))
+                {
+                    BorderPointList.Add(new Vector2(x, y));
+                    SetPixel(x, y);
+                    return true;
+                }
 
-                    if (AddMorePoint())
-                    {
-                        isMore = true;
-                    }
 
-                    if (timer >= 100)
-                    {
-                        timer = 0;
-                        GenerateMap.GetGenerateMap.map.Apply();
-                        yield return new WaitForFixedUpdate();
-                    }
-                    timer++;
+
+
+                x = (int)BorderPointList[i].x - 1;
+                y = (int)BorderPointList[i].y + 1;
+                if (IsBorderPoint(x, y))
+                {
+                    BorderPointList.Add(new Vector2(x, y));
+                    SetPixel(x, y);
+                    return true;
+                }
+                x = (int)BorderPointList[i].x + 1;
+                y = (int)BorderPointList[i].y + 1;
+                if (IsBorderPoint(x, y))
+                {
+                    BorderPointList.Add(new Vector2(x, y));
+                    SetPixel(x, y);
+                    return true;
+                }
+                x = (int)BorderPointList[i].x + 1;
+                y = (int)BorderPointList[i].y - 1;
+                if (IsBorderPoint(x, y))
+                {
+                    BorderPointList.Add(new Vector2(x, y));
+                    SetPixel(x, y);
+                    return true;
+                }
+                x = (int)BorderPointList[i].x - 1;
+                y = (int)BorderPointList[i].y - 1;
+                if (IsBorderPoint(x, y))
+                {
+                    BorderPointList.Add(new Vector2(x, y));
+                    SetPixel(x, y);
+                    return true;
                 }
             }
+            return false;
         }
-        GenerateMap.GetGenerateMap.isGetPointOver = true;
+
+        bool IsBorderPoint(int x, int y)
+        {
+            Color color;
+            color = MapData.Map.GetPixel(x, y);
+            if (color == MapData.MapColor)
+            {
+                color = MapData.Map.GetPixel(x - 1, y);
+                if (color != MapData.MapColor && color != MapData.ChangeColor)
+                    return true;
+
+                color = MapData.Map.GetPixel(x, y + 1);
+                if (color != MapData.MapColor && color != MapData.ChangeColor)
+                    return true;
+
+                color = MapData.Map.GetPixel(x + 1, y);
+                if (color != MapData.MapColor && color != MapData.ChangeColor)
+                    return true;
+
+                color = MapData.Map.GetPixel(x, y - 1);
+                if (color != MapData.MapColor && color != MapData.ChangeColor)
+                    return true;
+            }
+
+            return false;
+        }
+
+        Vector2 GetBorderPoint(int x, int y)
+        {
+            while (!IsBorderPoint(x, y))
+            {
+                x--;
+                if (x <= 0)
+                    return Vector2.zero;
+            }
+            return new Vector2(x, y);
+        }
+
+        public IEnumerator GetCityFromPoint(int x, int y)
+        {
+            List<Vector2> BorderPointList = new List<Vector2>();
+            Vector2 vector = GetBorderPoint(x, y);
+            if (!vector.Equals(Vector2.zero))
+            {
+                if (vector.x >= 0)
+                {
+                    BorderPointList.Add(vector);
+                    bool isMore = true;
+                    int timer = 0;
+                    while (isMore)
+                    {
+                        isMore = false;
+
+                        if (AddMorePoint(BorderPointList))
+                        {
+                            isMore = true;
+                        }
+
+                        if (timer >= MapData.BoarderGenerateSpeed)
+                        {
+                            timer = 0;
+                            MapData.Map.Apply();
+                            yield return new WaitForFixedUpdate();
+                        }
+                        timer++;
+                    }
+                }
+            }
+            yield return EditorCoroutineRunner.StartEditorCoroutine(new Map().MakeCityMesh(GameObject.Instantiate(Resources.Load("MapData/BaseMeshObject")) as GameObject, BorderPointList));
+        }
     }
 }

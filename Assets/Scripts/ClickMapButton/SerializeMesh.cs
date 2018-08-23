@@ -17,10 +17,10 @@ public class SerializeMesh
 
     public static string MeshToString(MeshFilter mf, float scale)
     {
-        Mesh mesh = mf.mesh;
+        Mesh mesh = mf.sharedMesh;
         Material[] sharedMaterials = mf.GetComponent<Renderer>().sharedMaterials;
-        Vector2 textureOffset = mf.GetComponent<Renderer>().material.GetTextureOffset("_MainTex");
-        Vector2 textureScale = mf.GetComponent<Renderer>().material.GetTextureScale("_MainTex");
+        Vector2 textureOffset = mf.GetComponent<Renderer>().sharedMaterial.GetTextureOffset("_MainTex");
+        Vector2 textureScale = mf.GetComponent<Renderer>().sharedMaterial.GetTextureScale("_MainTex");
         StringBuilder stringBuilder = new StringBuilder();
         Vector3[] vertices = mesh.vertices;
         for (int i = 0; i < vertices.Length; i++)
