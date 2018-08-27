@@ -7,6 +7,7 @@ namespace EarthSimulator.MapEditor
     public class Map
     {
         private GameObject BaseMeshObject;
+        public static int ProvinceNum = 0;
         public Map()
         {
             BaseMeshObject = Resources.Load("BaseMeshObject") as GameObject;
@@ -146,108 +147,114 @@ namespace EarthSimulator.MapEditor
 
         public IEnumerator MakeCityMesh(GameObject go, List<Vector2> BorderPointList)
         {
-            DeleteDeathPoints(BorderPointList);
-            yield return new WaitForSeconds(0.1f);
-            NormalizeBorderPoint(BorderPointList);
-
-            List<Vector3> m_vertices = new List<Vector3>();
-            List<int> m_triangles = new List<int>();
-            List<PointF> nPolygon = new List<PointF>();
-            m_vertices.Clear();
-            m_triangles.Clear();
-            MeshFilter meshFilter = go.GetComponent<MeshFilter>();
-            Mesh mesh = new Mesh();
-            meshFilter.mesh = mesh;
-            List<Vector3> polygon = new List<Vector3>();
-            List<Vector3> hollowPointList;
-            foreach (Vector2 vec in BorderPointList)
+            if (go != null)
             {
-                if (!polygon.Contains(new Vector3(vec.x, vec.y, 0)))
-                {
-                    polygon.Add(new Vector3(vec.x, vec.y, 0));
-                    m_vertices.Add(new Vector3(vec.x, vec.y, 0));
-                    nPolygon.Add(new PointF(vec.x, vec.y));
-                }
-            }
-            int mapGenerateCount = 0;
-            while (polygon.Count > 2)
-            {
-                for (int j = 0; j < polygon.Count; j++)
-                {
-                    hollowPointList = GetHollowPointList(polygon);
-                    if (!hollowPointList.Contains(polygon[j]) && polygon.Count > 2)
-                    {
-                        Vector3 fVec;
-                        Vector3 nVec;
-                        Vector3 lVec;
-                        if (j > 0 && j < polygon.Count - 1)
-                        {
-                            fVec = new Vector3(polygon[j - 1].x, polygon[j - 1].y, 0);
-                            nVec = new Vector3(polygon[j].x, polygon[j].y, 0);
-                            lVec = new Vector3(polygon[j + 1].x, polygon[j + 1].y, 0);
-                        }
-                        else
-                        if (j == 0)
-                        {
-                            fVec = new Vector3(polygon[polygon.Count - 1].x, polygon[polygon.Count - 1].y, 0);
-                            nVec = new Vector3(polygon[j].x, polygon[j].y, 0);
-                            lVec = new Vector3(polygon[j + 1].x, polygon[j + 1].y, 0);
-                        }
-                        else
-                        {
-                            fVec = new Vector3(polygon[j - 1].x, polygon[j - 1].y, 0);
-                            nVec = new Vector3(polygon[j].x, polygon[j].y, 0);
-                            lVec = new Vector3(polygon[0].x, polygon[0].y, 0);
-                        }
-                        if (hollowPointList.Count == 0 || MapData.IsForceContinue || IsPolygonContainLine(nPolygon, fVec, lVec))
-                        {
-                            for (int i = 0; i < m_vertices.Count; i++)
-                                if (Vector3.Equals(fVec, m_vertices[i]))
-                                {
-                                    m_triangles.Add(i);
-                                    break;
-                                }
-                            for (int i = 0; i < m_vertices.Count; i++)
-                                if (Vector3.Equals(nVec, m_vertices[i]))
-                                {
-                                    m_triangles.Add(i);
-                                    break;
-                                }
-                            for (int i = 0; i < m_vertices.Count; i++)
-                                if (Vector3.Equals(lVec, m_vertices[i]))
-                                {
-                                    m_triangles.Add(i);
-                                    break;
-                                }
-                            MapData.IsForceContinue = false;
-                            polygon.Remove(polygon[j]);
-                            nPolygon.Remove(nPolygon[j]);
-                            j--;
-                        }
-                    }
-                    hollowPointList.Clear();
+                go.transform.parent = MapData.BaseGameObject.transform;
 
-                    mapGenerateCount++;
-                    if (mapGenerateCount >= MapData.MapGenerateSpeed)
+                DeleteDeathPoints(BorderPointList);
+                yield return new WaitForSeconds(0.1f);
+                NormalizeBorderPoint(BorderPointList);
+
+                List<Vector3> m_vertices = new List<Vector3>();
+                List<int> m_triangles = new List<int>();
+                List<PointF> nPolygon = new List<PointF>();
+                m_vertices.Clear();
+                m_triangles.Clear();
+                MeshFilter meshFilter = go.GetComponent<MeshFilter>();
+                Mesh mesh = new Mesh();
+                meshFilter.mesh = mesh;
+                List<Vector3> polygon = new List<Vector3>();
+                List<Vector3> hollowPointList;
+                foreach (Vector2 vec in BorderPointList)
+                {
+                    if (!polygon.Contains(new Vector3(vec.x, vec.y, 0)))
                     {
-                        mapGenerateCount = 0;
-                        mesh.Clear();
-                        mesh.vertices = m_vertices.ToArray();
-                        mesh.triangles = m_triangles.ToArray();
-                        mesh.RecalculateNormals();
-                        yield return new WaitForSeconds(0.1f);
+                        polygon.Add(new Vector3(vec.x, vec.y, 0));
+                        m_vertices.Add(new Vector3(vec.x, vec.y, 0));
+                        nPolygon.Add(new PointF(vec.x, vec.y));
                     }
                 }
-            }
+                int mapGenerateCount = 0;
+                while (polygon.Count > 2)
+                {
+                    for (int j = 0; j < polygon.Count; j++)
+                    {
+                        hollowPointList = GetHollowPointList(polygon);
+                        if (!hollowPointList.Contains(polygon[j]) && polygon.Count > 2)
+                        {
+                            Vector3 fVec;
+                            Vector3 nVec;
+                            Vector3 lVec;
+                            if (j > 0 && j < polygon.Count - 1)
+                            {
+                                fVec = new Vector3(polygon[j - 1].x, polygon[j - 1].y, 0);
+                                nVec = new Vector3(polygon[j].x, polygon[j].y, 0);
+                                lVec = new Vector3(polygon[j + 1].x, polygon[j + 1].y, 0);
+                            }
+                            else
+                            if (j == 0)
+                            {
+                                fVec = new Vector3(polygon[polygon.Count - 1].x, polygon[polygon.Count - 1].y, 0);
+                                nVec = new Vector3(polygon[j].x, polygon[j].y, 0);
+                                lVec = new Vector3(polygon[j + 1].x, polygon[j + 1].y, 0);
+                            }
+                            else
+                            {
+                                fVec = new Vector3(polygon[j - 1].x, polygon[j - 1].y, 0);
+                                nVec = new Vector3(polygon[j].x, polygon[j].y, 0);
+                                lVec = new Vector3(polygon[0].x, polygon[0].y, 0);
+                            }
+                            if (hollowPointList.Count == 0 || MapData.IsForceContinue || IsPolygonContainLine(nPolygon, fVec, lVec))
+                            {
+                                for (int i = 0; i < m_vertices.Count; i++)
+                                    if (Vector3.Equals(fVec, m_vertices[i]))
+                                    {
+                                        m_triangles.Add(i);
+                                        break;
+                                    }
+                                for (int i = 0; i < m_vertices.Count; i++)
+                                    if (Vector3.Equals(nVec, m_vertices[i]))
+                                    {
+                                        m_triangles.Add(i);
+                                        break;
+                                    }
+                                for (int i = 0; i < m_vertices.Count; i++)
+                                    if (Vector3.Equals(lVec, m_vertices[i]))
+                                    {
+                                        m_triangles.Add(i);
+                                        break;
+                                    }
+                                MapData.IsForceContinue = false;
+                                polygon.Remove(polygon[j]);
+                                nPolygon.Remove(nPolygon[j]);
+                                j--;
+                            }
+                        }
+                        hollowPointList.Clear();
 
-            mesh.Clear();
-            mesh.vertices = m_vertices.ToArray();
-            mesh.triangles = m_triangles.ToArray();
-            mesh.RecalculateNormals();
-            yield return new WaitForEndOfFrame();
-            MapData.ProvinceNum++;
-            mesh.name = MapData.ProvinceNum.ToString() + "_mesh";
-            SerializeMesh.MeshToFile(meshFilter, mesh.name, 1);
+                        mapGenerateCount++;
+                        if (mapGenerateCount >= MapData.MapGenerateSpeed)
+                        {
+                            mapGenerateCount = 0;
+                            mesh.Clear();
+                            mesh.vertices = m_vertices.ToArray();
+                            mesh.triangles = m_triangles.ToArray();
+                            mesh.RecalculateNormals();
+                            yield return new WaitForSeconds(0.1f);
+                        }
+                    }
+                }
+
+                mesh.Clear();
+                mesh.vertices = m_vertices.ToArray();
+                mesh.triangles = m_triangles.ToArray();
+                mesh.RecalculateNormals();
+                yield return new WaitForEndOfFrame();
+                ProvinceNum++;
+                mesh.name = ProvinceNum.ToString() + "_mesh";
+                go.name = mesh.name;
+                SerializeMesh.MeshToFile(meshFilter, mesh.name, 1);
+            }
         }
     }
 }

@@ -11,6 +11,7 @@ namespace EarthSimulator.MapEditor
         #region private变量
         private static bool isLoadData = false;
         private static GameObject mapObject = null;
+        private static bool isGenerateData = false;
         #endregion
 
         #region ediotr修改的private变量
@@ -56,11 +57,11 @@ namespace EarthSimulator.MapEditor
         private static void GetGenerateSpeed()
         {
             GUILayout.BeginHorizontal();
-            EditorGUILayout.LabelField("改变边界点速度:");
-            MapData.BoarderGenerateSpeed = EditorGUILayout.Slider(MapData.BoarderGenerateSpeed, 1,100);
+            EditorGUILayout.LabelField("改变边界点生成速度:");
+            MapData.BoarderGenerateSpeed = EditorGUILayout.Slider(MapData.BoarderGenerateSpeed, 1, 100);
             GUILayout.EndHorizontal();
             GUILayout.BeginHorizontal();
-            EditorGUILayout.LabelField("改变地图生成速度:");
+            EditorGUILayout.LabelField("改变mesh生成速度:");
             MapData.MapGenerateSpeed = EditorGUILayout.Slider(MapData.MapGenerateSpeed, 1, 10);
             GUILayout.EndHorizontal();
             EditorGUILayout.Space();
@@ -73,15 +74,17 @@ namespace EarthSimulator.MapEditor
         {
             if (GUILayout.Button("加载地图相关数据"))
             {
+                GameObject baseObj = GameObject.Find("BaseGameObject");
+                if (baseObj != null)
+                {
+                    GameObject.DestroyImmediate(baseObj);
+                }
+
                 Object mapPrefab = Resources.Load("MapData/MapObject");
                 if (mapPrefab != null)
                 {
-                    if(mapObject!=null)
-                    {
-                        GameObject.DestroyImmediate(mapObject);
-                        mapObject = null;
-                    }
                     mapObject = GameObject.Instantiate(mapPrefab) as GameObject;
+                    mapObject.transform.parent = MapData.BaseGameObject.transform;
                     MapData.Image = null;
                     MapData.Image = (mapObject).GetComponentInChildren<RawImage>();
                     if (MapData.Image != null)
@@ -89,6 +92,11 @@ namespace EarthSimulator.MapEditor
                         Object mapTexture = Resources.Load("MapData/map");
                         if (mapTexture != null)
                         {
+                            if (MapData.Map != null)
+                            {
+                                GameObject.DestroyImmediate(MapData.Map);
+                                MapData.Map = null;
+                            }
                             MapData.Map = GameObject.Instantiate<Texture2D>(mapTexture as Texture2D);
                             mapSizeX = MapData.Map.width;
                             mapSizeY = MapData.Map.height;
@@ -110,16 +118,23 @@ namespace EarthSimulator.MapEditor
                 {
                     MapData.IsForceContinue = true;
                 }
+
+                if (GUILayout.Button("停止生成数据"))
+                {
+                    isGenerateData = false;
+                }
             }
         }
 
         private static IEnumerator GetCitys()
         {
+            isGenerateData = true;
+            Map.ProvinceNum = 0;
             for (int i = mapSizeX; i >= 0; i -= 16)
             {
                 for (int j = mapSizeY; j >= 0; j -= 16)
                 {
-                    if (MapData.Map.GetPixel(i, j) == MapData.MapColor)
+                    if (isGenerateData && MapData.Map.GetPixel(i, j) == MapData.MapColor)
                     {
                         yield return EditorCoroutineRunner.StartEditorCoroutine(new Province().GetCityFromPoint(i, j));
                     }

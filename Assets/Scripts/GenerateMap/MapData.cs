@@ -11,11 +11,12 @@ namespace EarthSimulator.MapEditor
         private static Color changeColor = Color.blue;
         private static Texture2D map = null;
         private static RawImage image;
-
-        public static int ProvinceNum = 0;
+        
         public static bool IsForceContinue = false;
         public static float BoarderGenerateSpeed = 10;
         public static float MapGenerateSpeed = 1;
+
+        private static GameObject baseGameObject;
 
         public static Color MapColor
         {
@@ -69,6 +70,19 @@ namespace EarthSimulator.MapEditor
             {
                 if (image == null || value == null)
                     image = value;
+            }
+        }
+
+        public static GameObject BaseGameObject
+        {
+            get
+            {
+                if (baseGameObject == null)
+                {
+                    baseGameObject = new GameObject();
+                    baseGameObject.name = "BaseGameObject";
+                }
+                return baseGameObject;
             }
         }
     }

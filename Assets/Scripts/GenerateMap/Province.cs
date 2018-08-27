@@ -165,7 +165,8 @@ namespace EarthSimulator.MapEditor
                     }
                 }
             }
-            yield return EditorCoroutineRunner.StartEditorCoroutine(new Map().MakeCityMesh(GameObject.Instantiate(Resources.Load("MapData/BaseMeshObject")) as GameObject, BorderPointList));
+            if (BorderPointList.Count > 2)
+                yield return EditorCoroutineRunner.StartEditorCoroutine(new Map().MakeCityMesh(GameObject.Instantiate(Resources.Load("MapData/BaseMeshObject")) as GameObject, BorderPointList));
         }
     }
 }
