@@ -10,8 +10,9 @@ namespace EarthSimulator.MapEditor
         private static Color mapColor = Color.red;
         private static Color changeColor = Color.blue;
         private static Texture2D map = null;
+        private static Texture2D colorMap = null;
         private static RawImage image;
-        
+
         public static bool IsForceContinue = false;
         public static float BoarderGenerateSpeed = 10;
         public static float MapGenerateSpeed = 1;
@@ -60,6 +61,19 @@ namespace EarthSimulator.MapEditor
             }
         }
 
+        public static Texture2D ColorMap
+        {
+            get
+            {
+                return colorMap;
+            }
+            set
+            {
+                if (colorMap == null || value == null)
+                    colorMap = value;
+            }
+        }
+
         public static RawImage Image
         {
             get
@@ -84,6 +98,14 @@ namespace EarthSimulator.MapEditor
                 }
                 return baseGameObject;
             }
+        }
+
+        public static bool ColorNear(Color color1, Color color2, float delta = 0)
+        {
+            if (Mathf.Abs(color1.r - color2.r) + Mathf.Abs(color1.g - color2.g) + Mathf.Abs(color1.b - color2.b) <= delta)
+                return true;
+            else
+                return false;
         }
     }
 }

@@ -18,19 +18,19 @@ namespace EarthSimulator.MapEditor
         {
             Color color;
             color = MapData.Map.GetPixel(x - 1, y);
-            if (color == MapData.MapColor)
+            if (MapData.ColorNear(color , MapData.MapColor))
                 return false;
 
             color = MapData.Map.GetPixel(x, y + 1);
-            if (color == MapData.MapColor)
+            if (MapData.ColorNear(color , MapData.MapColor))
                 return false;
 
             color = MapData.Map.GetPixel(x + 1, y);
-            if (color == MapData.MapColor)
+            if (MapData.ColorNear(color , MapData.MapColor))
                 return false;
 
             color = MapData.Map.GetPixel(x, y - 1);
-            if (color == MapData.MapColor)
+            if (MapData.ColorNear(color , MapData.MapColor))
                 return false;
 
             return true;
@@ -248,6 +248,12 @@ namespace EarthSimulator.MapEditor
                 mesh.Clear();
                 mesh.vertices = m_vertices.ToArray();
                 mesh.triangles = m_triangles.ToArray();
+                List<Vector2> uvs = new List<Vector2>();
+                for(int i = 0; i < m_vertices.Count; i++)
+                {
+                    uvs.Add(new Vector2(m_vertices[i].x / MapData.Map.width, m_vertices[i].y / MapData.Map.height));
+                }
+                mesh.SetUVs(0,uvs);
                 mesh.RecalculateNormals();
                 yield return new WaitForEndOfFrame();
                 ProvinceNum++;

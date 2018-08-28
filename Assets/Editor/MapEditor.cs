@@ -104,6 +104,12 @@ namespace EarthSimulator.MapEditor
                             MapData.Image.SetNativeSize();
                             isLoadData = true;
                         }
+
+                        mapTexture = Resources.Load("MapData/colorMap");
+                        if (mapTexture != null)
+                        {
+                            MapData.ColorMap = GameObject.Instantiate<Texture2D>(mapTexture as Texture2D);
+                        }
                     }
                 }
             }
@@ -134,7 +140,7 @@ namespace EarthSimulator.MapEditor
             {
                 for (int j = mapSizeY; j >= 0; j -= 16)
                 {
-                    if (isGenerateData && MapData.Map.GetPixel(i, j) == MapData.MapColor)
+                    if (isGenerateData && MapData.ColorNear(MapData.Map.GetPixel(i, j), MapData.MapColor))
                     {
                         yield return EditorCoroutineRunner.StartEditorCoroutine(new Province().GetCityFromPoint(i, j));
                     }

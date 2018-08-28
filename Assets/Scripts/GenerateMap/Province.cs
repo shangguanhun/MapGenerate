@@ -102,22 +102,22 @@ namespace EarthSimulator.MapEditor
         {
             Color color;
             color = MapData.Map.GetPixel(x, y);
-            if (color == MapData.MapColor)
+            if (MapData.ColorNear(color , MapData.MapColor))
             {
                 color = MapData.Map.GetPixel(x - 1, y);
-                if (color != MapData.MapColor && color != MapData.ChangeColor)
+                if (!MapData.ColorNear(color , MapData.MapColor) && !MapData.ColorNear(color , MapData.ChangeColor))
                     return true;
 
                 color = MapData.Map.GetPixel(x, y + 1);
-                if (color != MapData.MapColor && color != MapData.ChangeColor)
+                if (!MapData.ColorNear(color , MapData.MapColor) && !MapData.ColorNear(color , MapData.ChangeColor))
                     return true;
 
                 color = MapData.Map.GetPixel(x + 1, y);
-                if (color != MapData.MapColor && color != MapData.ChangeColor)
+                if (!MapData.ColorNear(color , MapData.MapColor) && !MapData.ColorNear(color , MapData.ChangeColor))
                     return true;
 
                 color = MapData.Map.GetPixel(x, y - 1);
-                if (color != MapData.MapColor && color != MapData.ChangeColor)
+                if (!MapData.ColorNear(color , MapData.MapColor) && !MapData.ColorNear(color , MapData.ChangeColor))
                     return true;
             }
 
