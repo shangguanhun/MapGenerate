@@ -1,0 +1,199 @@
+[33mcommit cb5a984c47b91faf57d34903fc9338c991f31cf6[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m, [m[1;31mMapGenerate/master[m[33m)[m
+Author: shangguanhun <sunyanfei01@snda.com>
+Date:   Mon Mar 4 15:03:30 2019 +0800
+
+    delete
+
+[33mcommit 6b9a6d480b8264d21c28a248c16ced0b906bc68f[m
+Merge: da3e0d8 57bab4c
+Author: shangguanhun <sunyanfei01@snda.com>
+Date:   Mon Mar 4 15:02:34 2019 +0800
+
+    Merge https://github.com/shangguanhun/MapGenerate
+
+[33mcommit da3e0d8a57cf30fc32b10de55027c6c10bf944e6[m
+Author: shangguanhun <sunyanfei01@snda.com>
+Date:   Mon Mar 4 15:02:00 2019 +0800
+
+    delete
+
+[33mcommit a0fbe91dc44f4a6063a2831501b2dedc02eb4b18[m
+Author: shangguanhun <sunyanfei01@snda.com>
+Date:   Mon Mar 4 15:00:32 2019 +0800
+
+    delete
+
+[33mcommit 57bab4c42f6130682573ee6a019554f47f8029cb[m
+Author: shangguanhun <sunyanfei01@snda.com>
+Date:   Mon Mar 4 15:00:32 2019 +0800
+
+    test
+
+[33mcommit 2cdb5ac8d48ad5b04f021274b471c1296588239b[m
+Merge: 4ce45c1 63513dd
+Author: 孙延飞01 <sunyanfei01@snda.com>
+Date:   Mon Mar 4 14:56:03 2019 +0800
+
+    Merge https://github.com/shangguanhun/MapGenerate
+
+[33mcommit 4ce45c1224478b0c18d58f0196439b42f8f7bd1c[m
+Author: 孙延飞01 <sunyanfei01@snda.com>
+Date:   Mon Mar 4 14:45:20 2019 +0800
+
+    deletetest
+
+[33mcommit 63513ddec35500735eff93080516d21fd2259f64[m
+Author: 孙延飞01 <sunyanfei01@snda.com>
+Date:   Mon Mar 4 14:45:20 2019 +0800
+
+    deletetest
+
+[33mcommit f78fc776bdafb94b0b68e4e9ffa15af53455af74[m
+Author: 孙延飞01 <sunyanfei01@snda.com>
+Date:   Mon Mar 4 14:42:27 2019 +0800
+
+    Signed-off-by: 孙延飞01 <sunyanfei01@snda.com>
+
+[33mcommit 33caa939df822310374d198a3cfc7289467da2dd[m
+Author: shangguanhun <1076270783@qq.com>
+Date:   Tue Aug 28 10:24:33 2018 +0800
+
+    mesh贴图
+    
+    给mesh贴一张真正的地图
+
+[33mcommit ef3022bd00a1900004da1ba2e55a91fadad664e8[m
+Author: shangguanhun <1076270783@qq.com>
+Date:   Mon Aug 27 16:02:00 2018 +0800
+
+    完善ediort功能
+    
+    调整代码位置，完善editor模式功能
+
+[33mcommit 5b81b1b2005b2c8101dd86b33faa77d90b30c165[m
+Author: shangguanhun <1076270783@qq.com>
+Date:   Thu Aug 23 17:16:21 2018 +0800
+
+    删除无效资源
+
+[33mcommit fcc5f05c5d040b3af95f5d0181f86448ac8cc557[m
+Author: shangguanhun <1076270783@qq.com>
+Date:   Thu Aug 23 17:07:24 2018 +0800
+
+    修改项目结构
+    
+    分离editor模式和game模式，减小各个模块的耦合
+
+[33mcommit 41e8fbd73a64b322cda77533c8820d575fc74023[m
+Author: shangguanhun <10762700783@qq.com>
+Date:   Thu Dec 7 19:41:48 2017 +0800
+
+    Signed-off-by: shangguanhun <10762700783@qq.com>
+
+[33mcommit 67e39f6748e18fdc72b95a5f78f93c8443277817[m
+Author: shangguanhun <10762700783@qq.com>
+Date:   Thu Dec 7 17:51:20 2017 +0800
+
+    修改项目结构，修复三角化异常的bug，完成点击
+
+[33mcommit af8b717b70aa940538e99507fb0f203fd7ae975e[m
+Author: shangguanhun <10762700783@qq.com>
+Date:   Fri Nov 24 16:05:12 2017 +0800
+
+    “完成”地图mesh的绘制
+
+[33mcommit 2cd3a1d4be0ca56f1d66ec0dd07e44c5970da034[m
+Author: shangguanhun <10762700783@qq.com>
+Date:   Thu Nov 23 10:53:20 2017 +0800
+
+    删除“死”点，大致出现效果，还有部分点未处理干净
+
+[33mcommit df1ac3cd088122829d25c91feb77fb87c3b6c5a5[m
+Author: shangguanhun <10762700783@qq.com>
+Date:   Wed Nov 22 11:45:27 2017 +0800
+
+    使用向量判断顶点凹凸性
+
+[33mcommit f9d19d88be700115653fffe80e428431f22a30c0[m
+Author: shangguanhun <10762700783@qq.com>
+Date:   Mon Nov 20 16:48:53 2017 +0800
+
+    弃用通过直线与多边形关系判断凸点的方案，因其无法处理W形的凹多边形
+
+[33mcommit 4ecd55eeb9921bd623dfd5e0366c0fcc222d1bea[m
+Author: shangguanhun <10762700783@qq.com>
+Date:   Mon Nov 20 11:36:06 2017 +0800
+
+    修复勾勒部分边界点死循环的bug，ps地图，使地图边界点与图像边界点分离
+
+[33mcommit 2d015804c196944bda421f80bbd61001f7a412bd[m
+Author: shangguanhun <10762700783@qq.com>
+Date:   Fri Nov 17 17:03:08 2017 +0800
+
+    弃用区域填充算法，使用新算法使边界点连续
+
+[33mcommit 61cff82ced97690ed4833e697bc71f43c6b3a354[m
+Author: shangguanhun <10762700783@qq.com>
+Date:   Wed Nov 15 11:12:34 2017 +0800
+
+    提交修改
+
+[33mcommit ed38c2a5bad1c6dbe1998bb66c33274fdf12dd2a[m
+Author: shangguanhun <10762700783@qq.com>
+Date:   Wed Nov 8 17:38:08 2017 +0800
+
+    更改整个代码空间
+
+[33mcommit cefddb82f35a05c05b0de73fefe8a8b3f4ffad9b[m
+Author: shangguanhun <10762700783@qq.com>
+Date:   Wed Nov 8 17:14:17 2017 +0800
+
+    添加判断多边形交叉关系类
+
+[33mcommit 859a01440b63c12a11a503e3dd78476f37abd6b9[m
+Author: shangguanhun <10762700783@qq.com>
+Date:   Mon Nov 6 11:47:15 2017 +0800
+
+    将mesh显示在场景中
+
+[33mcommit 53f7ad8e40a8a876ffd8d43e5759bd50c03a0083[m
+Author: shangguanhun <10762700783@qq.com>
+Date:   Mon Nov 6 10:38:06 2017 +0800
+
+    重构项目文件，标准化边界点（删除多余的点），生成mesh！
+
+[33mcommit 8f9b9d9940f1dcc78724fc8c7b932c513d86d25f[m
+Author: shangguanhun <10762700783@qq.com>
+Date:   Fri Nov 3 11:19:58 2017 +0800
+
+    ps处理图片，完成图片的实时绘制及填充效果展示，加速代码执行速度
+
+[33mcommit 6f0e5ec7e7db5dfd161894c8c797b5f686249bd0[m
+Author: shangguanhun <10762700783@qq.com>
+Date:   Thu Nov 2 17:01:16 2017 +0800
+
+    协调协程代码执行
+
+[33mcommit ac5f8ae48fe71765fda08a5e08719cd01ef952ff[m
+Author: shangguanhun <10762700783@qq.com>
+Date:   Thu Nov 2 16:49:31 2017 +0800
+
+    构建异步地图生成流程，完成从像素获取到border点的保存
+
+[33mcommit 49880e9ceacad4d3a0927bd4c10cc6d42668438b[m
+Author: shangguanhun <10762700783@qq.com>
+Date:   Wed Nov 1 16:40:40 2017 +0800
+
+    添加地图文件
+
+[33mcommit 1a4e2a216b1b62e0ba283dbc7c2e95535be95a9b[m
+Author: shangguanhun <10762700783@qq.com>
+Date:   Wed Nov 1 16:39:35 2017 +0800
+
+    添加GenerateMap代码并挂载
+
+[33mcommit b1f6ed730de14f0488cab85d6b2040645814ce99[m
+Author: shangguanhun <10762700783@qq.com>
+Date:   Wed Nov 1 16:35:48 2017 +0800
+
+    创建项目
